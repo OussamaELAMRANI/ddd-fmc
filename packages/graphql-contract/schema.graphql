@@ -1,0 +1,31 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateEventInput {
+  description: String!
+  subtitle: String
+  title: String!
+}
+
+type EventModel {
+  createdAt: Timestamp!
+  description: String
+  id: Int!
+  isPublished: Boolean!
+  slug: String!
+  title: String
+}
+
+type Mutation {
+  createEvent(input: CreateEventInput!): EventModel!
+}
+
+type Query {
+  events(limit: Int): [EventModel!]!
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp

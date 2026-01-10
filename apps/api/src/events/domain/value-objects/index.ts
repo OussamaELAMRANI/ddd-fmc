@@ -1,0 +1,4 @@
+export * from './event-id.vo'
+export * from './event-title.vo'
+export * from './event-subtitle.vo'
+export * from './event-description.vo'

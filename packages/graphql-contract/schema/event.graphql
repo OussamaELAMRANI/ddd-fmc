@@ -1,0 +1,17 @@
+type Event {
+  id: Int!
+  slug: String!
+  title: String
+  description: String
+  isPublished: Boolean!
+  createdAt: String!
+}
+
+type Query {
+  events(limit: Int): [Event!]!
+  event(id: Int!): Event
+}
+
+type Mutation {
+  createEvent(slug: String!, title: String!): Int!
+}

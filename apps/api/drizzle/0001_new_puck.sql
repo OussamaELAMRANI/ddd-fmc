@@ -1,0 +1,22 @@
+CREATE TABLE "events" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"slug" varchar(255) NOT NULL,
+	"title" varchar(255),
+	"subtitle" varchar(255),
+	"description" text,
+	"url" text,
+	"thumbnail" varchar(255),
+	"poster" varchar(255),
+	"url_pdf" text,
+	"address" text,
+	"started_at" timestamp,
+	"ended_at" timestamp,
+	"has_ticket" boolean DEFAULT false,
+	"is_published" boolean DEFAULT false,
+	"notify" boolean DEFAULT false,
+	"has_live" boolean DEFAULT false,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	"deleted_at" timestamp,
+	CONSTRAINT "events_slug_unique" UNIQUE("slug")
+);

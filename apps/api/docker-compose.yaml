@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fmc_nest_db
+    environment:
+      POSTGRES_USER: ${DB_USER:-admin}        # Defaults to 'admin' if env var missing
+      POSTGRES_PASSWORD: ${DB_PASS:-root}     # Defaults to 'root'
+      POSTGRES_DB: ${DB_NAME:-app_db}         # Defaults to 'app_db'
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fmc-network
+    restart: always
+
+# Define the persistent volume
+volumes:
+  postgres_data:
+
+networks:
+  fmc-network:
+    driver: bridge
