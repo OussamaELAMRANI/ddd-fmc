@@ -15,19 +15,20 @@ export const eventsTable = pgTable('events', {
   title: varchar('title', { length: 255 }),
   subtitle: varchar('subtitle', { length: 255 }),
   description: text('description'),
-  url: text('url'),
+  url_link: text('url'),
   thumbnail: varchar('thumbnail', { length: 255 }),
 
   poster: varchar('poster', { length: 255 }),
   urlPdf: text('url_pdf'),
   address: text('address'),
 
-  startedAt: timestamp('started_at'),
-  endedAt: timestamp('ended_at'),
+  startedAt: timestamp('started_at').notNull(),
+  endedAt: timestamp('ended_at').notNull(),
 
   hasTicket: boolean('has_ticket').default(false),
   isPublished: boolean('is_published').default(false),
   notify: boolean('notify').default(false),
+  notifiedAt: timestamp('notifiedAt'),
   hasLive: boolean('has_live').default(false),
 
   createdAt: timestamp('created_at').defaultNow().notNull(),

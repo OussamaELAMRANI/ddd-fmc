@@ -9,6 +9,14 @@ export class EventMapper {
       slug: raw.slug,
       subtitle: raw.subtitle,
       description: raw.description,
+      url_link: raw.url_link,
+      thumbnail: raw.thumbnail,
+      startedAt: raw.startedAt,
+      endedAt: raw.endedAt,
+      hasTicket: raw.hasTicket,
+      hasLive: raw.hasLive,
+      isPublished: raw.isPublished,
+      address: raw.address,
     };
   }
 
@@ -18,8 +26,14 @@ export class EventMapper {
       slug: entity.slug,
       subtitle: entity.subtitle,
       description: entity.description,
-      // createdAt: entity.createdAt,
-      updatedAt: new Date(), // Update timestamp on save
+      url_link: entity.url_link,
+      thumbnail: entity.thumbnail,
+      startedAt: entity.startedAt,
+      endedAt: entity.endedAt,
+      hasLive: entity.hasLive,
+      hasTicket: entity.hasTicket,
+      isPublished: entity.isPublished ,
+      address: entity.address,
     };
   }
 }

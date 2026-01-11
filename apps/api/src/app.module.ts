@@ -8,9 +8,14 @@ import { DatabaseModule } from '@/shared/database/database.module';
 import { validate } from '@/shared/infrastructure/env/env.schema';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'; // <--- Import here
-import { join } from "path";
+import { join } from 'path';
 import { EventsModule } from '@/events/events.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import {
+  GRAPHQL_ERROR_FILTER,
+  GraphqlValidationFilter,
+} from '@/shared/filters/graphql-validation.filter';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,7 +26,6 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     CqrsModule.forRoot(),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      // TARGET: Write the schema directly to the packages folder
       autoSchemaFile: join(
         process.cwd(),
         '../../packages/graphql-contract/schema.graphql',
@@ -39,6 +43,12 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
     EventsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: GRAPHQL_ERROR_FILTER,
+      useClass: GraphqlValidationFilter,
+    },
+  ],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class EventModel {
@@ -14,9 +14,21 @@ export class EventModel {
   @Field({ nullable: true })
   description?: string;
 
+  @Field(() => GraphQLISODateTime)
+  startedAt: Date;
+
+  @Field(() => GraphQLISODateTime)
+  endedAt: Date;
+
   @Field()
-  createdAt: Date;
+  hasLive: boolean;
+
+  @Field()
+  hasTicket: boolean;
 
   @Field()
   isPublished: boolean;
+
+  @Field({ nullable: true })
+  address: string;
 }

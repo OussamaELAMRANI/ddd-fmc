@@ -3,17 +3,35 @@
 # ------------------------------------------------------
 
 input CreateEventInput {
-  description: String!
+  address: String
+  description: String
+  endedAt: Timestamp!
+  hasLive: Boolean
+  hasTicket: Boolean
+  isPublished: Boolean
+  poster: String
+  startedAt: Timestamp!
   subtitle: String
+  thumbnail: String
   title: String!
+  url_link: String
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type EventModel {
-  createdAt: Timestamp!
+  address: String
   description: String
+  endedAt: DateTime!
+  hasLive: Boolean!
+  hasTicket: Boolean!
   id: Int!
   isPublished: Boolean!
   slug: String!
+  startedAt: DateTime!
   title: String
 }
 
@@ -22,7 +40,7 @@ type Mutation {
 }
 
 type Query {
-  events(limit: Int): [EventModel!]!
+  events: [EventModel!]!
 }
 
 """
