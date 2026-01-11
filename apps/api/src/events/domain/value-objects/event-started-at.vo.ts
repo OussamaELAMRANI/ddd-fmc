@@ -1,16 +1,5 @@
-import { z } from 'zod';
-import { ValueObject } from '@/shared/domain/value-object.base';
+import { DateValueObject } from '@/events/domain/value-objects/DateValueObject';
 
-export class EventStartedAt extends ValueObject<Date> {
-
-  protected validate(value: Date): void {
-    if (!EventStartedAt.schema.safeParse(value).success) {
-      throw new Error('this is not a valid start date');
-    }
-  }
-
-  static readonly schema = z.coerce.date({
-    error: 'the date format is invalid',
-  });
-
+export class EventStartedAt extends DateValueObject {
+  message = 'Event start date must be valid format';
 }

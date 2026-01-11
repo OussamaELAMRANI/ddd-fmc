@@ -1,4 +1,5 @@
 import { Field, GraphQLISODateTime, Int, ObjectType } from '@nestjs/graphql';
+import { UrlLink } from '@/events/presentation/graphql/models/url-link.model';
 
 @ObjectType()
 export class EventModel {
@@ -8,8 +9,8 @@ export class EventModel {
   @Field()
   slug: string;
 
-  @Field({ nullable: true })
-  title?: string;
+  @Field()
+  title: string;
 
   @Field({ nullable: true })
   description?: string;
@@ -30,5 +31,11 @@ export class EventModel {
   isPublished: boolean;
 
   @Field({ nullable: true })
-  address: string;
+  address?: string;
+
+  @Field(() => UrlLink, { nullable: true })
+  externalLink?: UrlLink;
+
+  @Field(() => GraphQLISODateTime, { nullable: true })
+  notifiedAt: Date;
 }

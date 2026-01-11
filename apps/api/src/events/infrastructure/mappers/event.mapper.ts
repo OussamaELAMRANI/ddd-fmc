@@ -9,7 +9,7 @@ export class EventMapper {
       slug: raw.slug,
       subtitle: raw.subtitle,
       description: raw.description,
-      url_link: raw.url_link,
+      externalLink: raw.externalLink,
       thumbnail: raw.thumbnail,
       startedAt: raw.startedAt,
       endedAt: raw.endedAt,
@@ -17,6 +17,7 @@ export class EventMapper {
       hasLive: raw.hasLive,
       isPublished: raw.isPublished,
       address: raw.address,
+      notifiedAt: raw.notifiedAt,
     };
   }
 
@@ -26,14 +27,15 @@ export class EventMapper {
       slug: entity.slug,
       subtitle: entity.subtitle,
       description: entity.description,
-      url_link: entity.url_link,
+      externalLink: entity.externalLink,
       thumbnail: entity.thumbnail,
       startedAt: entity.startedAt,
       endedAt: entity.endedAt,
       hasLive: entity.hasLive,
       hasTicket: entity.hasTicket,
-      isPublished: entity.isPublished ,
+      isPublished: entity.isPublished,
       address: entity.address,
+      notifiedAt: entity.notifiedAt,
     };
   }
 }

@@ -8,6 +8,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { type InferSelectModel, type InferInsertModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
+import { urlLink } from '@/shared/database/custom-types/url-link.type';
 
 export const eventsTable = pgTable('events', {
   id: serial('id').primaryKey(),
@@ -15,7 +16,7 @@ export const eventsTable = pgTable('events', {
   title: varchar('title', { length: 255 }),
   subtitle: varchar('subtitle', { length: 255 }),
   description: text('description'),
-  url_link: text('url'),
+  externalLink: urlLink('external_link'),
   thumbnail: varchar('thumbnail', { length: 255 }),
 
   poster: varchar('poster', { length: 255 }),
@@ -28,7 +29,7 @@ export const eventsTable = pgTable('events', {
   hasTicket: boolean('has_ticket').default(false),
   isPublished: boolean('is_published').default(false),
   notify: boolean('notify').default(false),
-  notifiedAt: timestamp('notifiedAt'),
+  notifiedAt: timestamp('notified_at'),
   hasLive: boolean('has_live').default(false),
 
   createdAt: timestamp('created_at').defaultNow().notNull(),

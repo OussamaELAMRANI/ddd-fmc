@@ -1,10 +1,5 @@
-import { EventStartedAt } from '@/events/domain/value-objects/event-started-at.vo';
+import { DateValueObject } from '@/events/domain/value-objects/DateValueObject';
 
-export class EventEndedAtVo extends EventStartedAt {
-
-  protected validate(value: Date): void {
-    if (!EventEndedAtVo.schema.safeParse(value).success) {
-      throw new Error('this is not a valid end date');
-    }
-  }
+export class EventEndedAtVo extends DateValueObject {
+  message = 'Event end date must be valid format';
 }

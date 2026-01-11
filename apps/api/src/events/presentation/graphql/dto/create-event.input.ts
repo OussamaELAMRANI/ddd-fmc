@@ -1,4 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
+import { UrlLinkInput } from '@/events/presentation/graphql/dto/url-link.input';
 
 @InputType()
 export class CreateEventInput {
@@ -11,8 +12,8 @@ export class CreateEventInput {
   @Field({ nullable: true })
   description: string;
 
-  @Field({ nullable: true })
-  url_link: string;
+  @Field(() => UrlLinkInput, { nullable: true })
+  externalLink?: UrlLinkInput;
 
   @Field({ nullable: true })
   thumbnail: string;
@@ -37,4 +38,7 @@ export class CreateEventInput {
 
   @Field({ nullable: true })
   address: string;
+
+  @Field(() => Date, { nullable: true })
+  notifiedAt: Date;
 }

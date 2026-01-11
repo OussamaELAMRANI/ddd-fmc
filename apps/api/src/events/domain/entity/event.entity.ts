@@ -5,7 +5,7 @@ import {
   EventIdVo,
   EventSubtitleVo,
   EventTitleVo,
-  EventUrlLinkVo,
+  EventExternalLinkVo,
 } from '@/events/domain/value-objects';
 import { EventSlugVo } from '@/events/domain/value-objects/event-slug.vo';
 import { EventThumbnail } from '@/events/domain/value-objects/event-thumbnail.vo';
@@ -15,6 +15,8 @@ import { EventEndedAtVo } from '@/events/domain/value-objects/event-ended-at.vo'
 import { EventHasTicket } from '@/events/domain/value-objects/event-has-ticket.vo';
 import { EventHasLive } from '@/events/domain/value-objects/event-has-live.vo';
 import { EventAddressVo } from '@/events/domain/value-objects/event-address.vo';
+import { UrlLinkType } from '@/shared/database/custom-types/url-link.type';
+import { EventNotifiedAtVo } from '@/events/domain/value-objects/event-notified-at.vo';
 
 export class Event extends AggregateRoot {
   private constructor(
@@ -23,7 +25,7 @@ export class Event extends AggregateRoot {
     private _title: EventTitleVo,
     private _subtitle: EventSubtitleVo,
     private _description: EventDescriptionVo,
-    private _url_link: EventUrlLinkVo,
+    private _external_link: EventExternalLinkVo,
     private _thumbnail: EventThumbnail,
     private _poster: EventPoster,
     private _startedAt: EventStartedAt,
@@ -32,6 +34,7 @@ export class Event extends AggregateRoot {
     private _hasLive: EventHasLive,
     private _address: EventAddressVo,
     private _isPublished: boolean,
+    private _notifiedAt: EventNotifiedAtVo,
   ) {
     super();
   }
@@ -42,14 +45,15 @@ export class Event extends AggregateRoot {
     const slug = new EventSlugVo(props.slug);
     const subtitle = new EventSubtitleVo(props.subtitle);
     const description = new EventDescriptionVo(props.description);
-    const url_link = new EventUrlLinkVo(props.url_link);
+    const external_link = new EventExternalLinkVo(props.externalLink);
     const thumbnail = new EventThumbnail(props.thumbnail);
-    const poster = new EventPoster(props.url_link);
+    const poster = new EventPoster(props.poster);
     const startedAt = new EventStartedAt(props.startedAt);
     const endedAt = new EventEndedAtVo(props.endedAt);
     const hasTicket = new EventHasTicket(props.hasTicket);
     const hasLive = new EventHasLive(props.hasLive);
     const address = new EventAddressVo(props.address);
+    const notifiedAt = new EventNotifiedAtVo(props.notifiedAt);
 
     return new Event(
       id,
@@ -57,7 +61,7 @@ export class Event extends AggregateRoot {
       title,
       subtitle || null,
       description,
-      url_link,
+      external_link,
       thumbnail,
       poster,
       startedAt,
@@ -66,26 +70,7 @@ export class Event extends AggregateRoot {
       hasLive,
       address,
       props.isPublished,
-    );
-  }
-
-  // Reconstitute from Database (Used by Mapper)
-  static restore(props: EventModel): Event {
-    return new Event(
-      new EventIdVo(props.id),
-      new EventSlugVo(props.slug),
-      new EventTitleVo(props.title),
-      new EventSubtitleVo(props.subtitle),
-      new EventDescriptionVo(props.description),
-      new EventUrlLinkVo(props.url_link),
-      new EventThumbnail(props.thumbnail),
-      new EventPoster(props.poster),
-      new EventStartedAt(props.startedAt),
-      new EventEndedAtVo(props.endedAt),
-      new EventHasTicket(props.hasTicket),
-      new EventHasLive(props.hasLive),
-      new EventAddressVo(props.address),
-      props.isPublished,
+      notifiedAt,
     );
   }
 
@@ -107,9 +92,6 @@ export class Event extends AggregateRoot {
 
   get description(): string {
     return this._description.getValue();
-  }
-  get url_link(): string | null {
-    return this._url_link.getValue();
   }
 
   get thumbnail(): string | null {
@@ -138,5 +120,13 @@ export class Event extends AggregateRoot {
 
   get address(): string {
     return this._address.getValue();
+  }
+
+  get externalLink(): UrlLinkType {
+    return this._external_link.getValue();
+  }
+
+  get notifiedAt(): Date {
+    return this._notifiedAt.getValue();
   }
 }

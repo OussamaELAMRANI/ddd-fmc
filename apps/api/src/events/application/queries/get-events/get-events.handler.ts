@@ -14,7 +14,7 @@ export class GetEventsHandler implements IQueryHandler<GetEventsQuery> {
     return this.db
       .select()
       .from(eventsTable)
-      .limit(query.limit)
-      .offset(query.offset);
+      // .limit(query.limit)
+      // .offset(query.offset);
   }
 }

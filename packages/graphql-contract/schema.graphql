@@ -6,15 +6,16 @@ input CreateEventInput {
   address: String
   description: String
   endedAt: Timestamp!
+  externalLink: UrlLinkInput
   hasLive: Boolean
   hasTicket: Boolean
   isPublished: Boolean
+  notifiedAt: Timestamp
   poster: String
   startedAt: Timestamp!
   subtitle: String
   thumbnail: String
   title: String!
-  url_link: String
 }
 
 """
@@ -26,13 +27,15 @@ type EventModel {
   address: String
   description: String
   endedAt: DateTime!
+  externalLink: UrlLink
   hasLive: Boolean!
   hasTicket: Boolean!
   id: Int!
   isPublished: Boolean!
+  notifiedAt: DateTime
   slug: String!
   startedAt: DateTime!
-  title: String
+  title: String!
 }
 
 type Mutation {
@@ -47,3 +50,13 @@ type Query {
 `Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
 """
 scalar Timestamp
+
+type UrlLink {
+  name: String
+  url: String!
+}
+
+input UrlLinkInput {
+  name: String
+  url: String!
+}
