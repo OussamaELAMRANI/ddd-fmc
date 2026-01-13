@@ -25,6 +25,7 @@ scalar DateTime
 
 type EventModel {
   address: String
+  createdAt: DateTime!
   description: String
   endedAt: DateTime!
   externalLink: UrlLink
@@ -36,6 +37,7 @@ type EventModel {
   slug: String!
   startedAt: DateTime!
   title: String!
+  updatedAt: DateTime!
 }
 
 type Mutation {

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ValueObject } from '@/shared/domain/value-object.base';
 
 export class EventAddressVo extends ValueObject<string> {
-  static readonly schema = z.string().optional()
+  static readonly schema = z.string().optional().nullable()
 
   protected validate(value: string) {
     if (!EventAddressVo.schema.safeParse(value).success) {

@@ -17,6 +17,7 @@ import { EventHasLive } from '@/events/domain/value-objects/event-has-live.vo';
 import { EventAddressVo } from '@/events/domain/value-objects/event-address.vo';
 import { UrlLinkType } from '@/shared/database/custom-types/url-link.type';
 import { EventNotifiedAtVo } from '@/events/domain/value-objects/event-notified-at.vo';
+import { EventCreatedEvent } from '@/events/domain/event/event-created.event';
 
 export class Event extends AggregateRoot {
   private constructor(
@@ -55,7 +56,7 @@ export class Event extends AggregateRoot {
     const address = new EventAddressVo(props.address);
     const notifiedAt = new EventNotifiedAtVo(props.notifiedAt);
 
-    return new Event(
+    const newEvent = new Event(
       id,
       slug,
       title,
@@ -72,6 +73,70 @@ export class Event extends AggregateRoot {
       props.isPublished,
       notifiedAt,
     );
+
+    newEvent.apply(new EventCreatedEvent(newEvent));
+
+    return newEvent;
+  }
+
+  /**
+   * Reconstitute an existing Event from the Database.
+   * Converts raw primitives back into Value Objects.
+   */
+  static reconstitute(props: {
+    id: number;
+    slug: string;
+    title: string;
+    subtitle: string;
+    description: string;
+    externalLink: UrlLinkType;
+    thumbnail: string;
+    poster: string;
+    startedAt: Date;
+    endedAt: Date;
+    hasTicket: boolean;
+    hasLive: boolean;
+    address: string;
+    isPublished: boolean;
+    notifiedAt: Date;
+  }): Event {
+    return new Event(
+      new EventIdVo(props.id),
+      new EventSlugVo(props.slug),
+      new EventTitleVo(props.title),
+      new EventSubtitleVo(props.subtitle),
+      new EventDescriptionVo(props.description),
+      new EventExternalLinkVo(props.externalLink),
+      new EventThumbnail(props.thumbnail),
+      new EventPoster(props.poster),
+      new EventStartedAt(props.startedAt),
+      new EventEndedAtVo(props.endedAt),
+      new EventHasTicket(props.hasTicket),
+      new EventHasLive(props.hasLive),
+      new EventAddressVo(props.address),
+      props.isPublished,
+      new EventNotifiedAtVo(props.notifiedAt),
+    );
+  }
+
+  public toPrimitives(): EventModel {
+    return {
+      id: this._id.getValue(),
+      slug: this._slug.getValue(),
+      title: this._title.getValue(),
+      subtitle: this._subtitle.getValue(),
+      description: this._description.getValue(),
+      externalLink: this._external_link.getValue(),
+      thumbnail: this._thumbnail.getValue(),
+      poster: this._poster?.getValue(), // Handle optional
+      startedAt: this._startedAt.getValue(),
+      endedAt: this._endedAt.getValue(),
+      hasTicket: this._hasTicket.getValue(),
+      hasLive: this._hasLive.getValue(),
+      address: this._address.getValue(),
+      isPublished: this._isPublished,
+      notifiedAt: this._notifiedAt?.getValue(),
+    };
   }
 
   get id(): number {

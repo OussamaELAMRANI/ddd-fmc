@@ -44,16 +44,18 @@ export class DrizzleEventRepository implements EventRepositoryPort {
     return result[0] || null;
   }
 
-  async save(event: Event): Promise<any> {
+  async save(event: Event): Promise<Event> {
     const raw = EventMapper.toPersistence(event);
-
-    const result = await this.db
+    const [result] = await this.db
       .insert(eventsTable)
       .values(raw)
-      .onConflictDoUpdate({ target: eventsTable.id, set: raw as any })
+      .onConflictDoUpdate({
+        target: eventsTable.id,
+        set: raw,
+      })
       .returning();
 
-    return EventMapper.toDomain(result[0]);
+    return EventMapper.toDomain(result);
   }
 
   async findById(id: number): Promise<EventType | null> {

@@ -38,4 +38,10 @@ export class EventModel {
 
   @Field(() => GraphQLISODateTime, { nullable: true })
   notifiedAt: Date;
+
+  @Field(() => GraphQLISODateTime)
+  createdAt: Date;
+
+  @Field(() => GraphQLISODateTime)
+  updatedAt: Date;
 }

@@ -7,6 +7,7 @@ import { EventRepositoryPort } from './application/ports/event.repository.port';
 import { CreateEventHandler } from '@/events/application/commands/create-event/create-event.handler';
 import { GetEventsHandler } from '@/events/application/queries/get-events/get-events.handler';
 import { SlugGeneratorService } from '@/events/domain/services/slug-generator.service';
+import { TypesenseEventHandler } from '@/events/application/event/typesense.event.handler';
 
 @Module({
   imports: [CqrsModule],
@@ -20,6 +21,7 @@ import { SlugGeneratorService } from '@/events/domain/services/slug-generator.se
       provide: EventRepositoryPort,
       useClass: DrizzleEventRepository,
     },
+    TypesenseEventHandler,
   ],
 })
 export class EventsModule {}
