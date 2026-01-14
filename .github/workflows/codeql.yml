@@ -1,0 +1,73 @@
+name: "CodeQL Analysis"
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '39 22 * * 1'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript-typescript' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Setup Node.js for Turborepo, NestJS, and Nuxt
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    # Install dependencies for the monorepo
+    - name: Install dependencies
+      run: npm ci
+
+    # Initialize CodeQL
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v4
+      with:
+        languages: ${{ matrix.language }}
+        # Optimize for TypeScript/JavaScript in monorepo
+        config: |
+          paths:
+            - apps
+            - packages
+          paths-ignore:
+            - '**/node_modules'
+            - '**/dist'
+            - '**/build'
+            - '**/.nuxt'
+            - '**/.output'
+            - '**/coverage'
+            - '**/*.spec.ts'
+            - '**/*.test.ts'
+        queries: +security-and-quality
+
+    # Build the monorepo (required for proper TypeScript analysis)
+    - name: Build monorepo
+      run: npm run build
+
+    # Perform CodeQL Analysis
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v4
+      with:
+        category: "/language:${{ matrix.language }}"
+        # Upload SARIF even on failure for partial results
+        upload: true
