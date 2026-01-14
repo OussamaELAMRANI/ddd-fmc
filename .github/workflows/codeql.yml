@@ -28,16 +28,22 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # Setup pnpm
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+
     # Setup Node.js for Turborepo, NestJS, and Nuxt
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
-        cache: 'npm'
+        cache: 'pnpm'
 
     # Install dependencies for the monorepo
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
 
     # Initialize CodeQL
     - name: Initialize CodeQL
@@ -62,7 +68,7 @@ jobs:
 
     # Build the monorepo (required for proper TypeScript analysis)
     - name: Build monorepo
-      run: npm run build
+      run: pnpm build
 
     # Perform CodeQL Analysis
     - name: Perform CodeQL Analysis
