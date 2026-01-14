@@ -1,28 +1,33 @@
 {
   "name": "web",
-  "version": "0.1.0",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack --port 3001",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch"
   },
   "dependencies": {
-    "@repo/ui": "workspace:*",
-    "next": "16.0.10",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@apollo/client": "^4.0.13",
+    "@pinia/nuxt": "^0.11.3",
+    "@repo/typescript-config": "workspace:^",
+    "graphql": "^16.12.0",
+    "graphql-tag": "^2.12.6",
+    "nuxt": "^4.2.2",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.15.3",
-    "@types/react": "19.1.0",
-    "@types/react-dom": "19.1.1",
-    "eslint": "^9.31.0",
-    "typescript": "5.8.2"
+    "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/typed-document-node": "^6.1.5",
+    "@graphql-codegen/typescript": "^5.0.7",
+    "@graphql-codegen/typescript-operations": "^5.0.7",
+    "@nuxt/ui": "^4.3.0",
+    "@nuxtjs/tailwindcss": "^6.14.0"
   }
 }
