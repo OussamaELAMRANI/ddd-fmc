@@ -28,11 +28,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Setup pnpm
+    # Setup pnpm (reads version from package.json packageManager field)
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: 9
 
     # Setup Node.js for Turborepo, NestJS, and Nuxt
     - name: Setup Node.js
