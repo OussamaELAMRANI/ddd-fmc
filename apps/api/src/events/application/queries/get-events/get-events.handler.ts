@@ -1,20 +1,13 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { DRIZZLE } from '@/shared/database/database.module';
 import { GetEventsQuery } from './get-events.query';
-import { eventsTable } from '@/events/infrastructure/database/schema/events.schema';
+import { EventRepositoryPort } from '@/events/application/ports/event.repository.port';
 
 @QueryHandler(GetEventsQuery)
 export class GetEventsHandler implements IQueryHandler<GetEventsQuery> {
-  constructor(@Inject(DRIZZLE) private readonly db: NodePgDatabase) {}
+  constructor(private readonly repository: EventRepositoryPort) {}
 
   async execute(query: GetEventsQuery) {
-    // Direct Drizzle access for performance
-    return this.db
-      .select()
-      .from(eventsTable)
-      // .limit(query.limit)
-      // .offset(query.offset);
+    // Use repository pattern to maintain DDD boundaries
+    return this.repository.findAll(query.limit, query.offset);
   }
 }

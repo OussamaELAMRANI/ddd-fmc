@@ -1,4 +1,28 @@
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
+import { ErrorLink } from '@apollo/client/link/error';
+import {
+  CombinedGraphQLErrors,
+  CombinedProtocolErrors,
+} from '@apollo/client/errors';
+
+const errorLink = new ErrorLink(({ error }) => {
+  if (CombinedGraphQLErrors.is(error)) {
+    error.errors.forEach(({ message, locations, path }) => {
+      console.error(`GraphQL error: ${message}`, {
+        locations,
+        path,
+      });
+    });
+  } else if (CombinedProtocolErrors.is(error)) {
+    error.errors.forEach(({ message, extensions }) => {
+      console.error(`Protocol error: ${message}`, {
+        extensions,
+      });
+    });
+  } else {
+    console.error(`Network error: ${error}`);
+  }
+});
 
 export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
@@ -12,7 +36,7 @@ export default defineNuxtPlugin(() => {
   });
 
   const apolloClient = new ApolloClient({
-    link: httpLink,
+    link: from([errorLink, httpLink]),
     cache: new InMemoryCache(),
   });
 

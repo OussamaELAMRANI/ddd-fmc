@@ -67,6 +67,19 @@ export class DrizzleEventRepository implements EventRepositoryPort {
     return result[0] || null;
   }
 
+  async findAll(limit?: number, offset?: number): Promise<EventType[]> {
+    let queryBuilder = this.db.select().from(eventsTable);
+
+    if (limit !== undefined) {
+      queryBuilder = queryBuilder.limit(limit);
+    }
+    if (offset !== undefined) {
+      queryBuilder = queryBuilder.offset(offset);
+    }
+
+    return queryBuilder;
+  }
+
   async delete(id: number): Promise<void> {
     await this.db.delete(eventsTable).where(eq(eventsTable.id, id));
   }

@@ -6,5 +6,6 @@ export abstract class EventRepositoryPort {
   abstract findById(id: number): Promise<EventType | null>;
   abstract findBySlug(slug: string): Promise<EventType | null>;
   abstract findLastSlug(slug: string): Promise<{ slug: string } | null>;
+  abstract findAll(limit?: number, offset?: number): Promise<EventType[]>;
   abstract delete(id: number): Promise<void>;
 }

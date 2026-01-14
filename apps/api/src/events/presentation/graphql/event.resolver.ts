@@ -18,8 +18,11 @@ export class EventResolver {
   ) {}
 
   @Query(() => [EventModel], { name: 'events' })
-  async events() {
-    return this.queryBus.execute(new GetEventsQuery(10));
+  async events(
+    @Args('limit', { type: () => Int, nullable: true }) limit?: number,
+    @Args('offset', { type: () => Int, nullable: true }) offset?: number,
+  ) {
+    return this.queryBus.execute(new GetEventsQuery(limit, offset));
   }
 
   @Mutation(() => EventModel)
